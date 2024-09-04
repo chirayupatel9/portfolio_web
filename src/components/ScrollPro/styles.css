@@ -1,0 +1,28 @@
+
+  .wrapper {
+    width: 10px;
+    height: 150px;
+    position: fixed;
+   
+    /* position: absolute; */
+    right: 0;
+    top: 0;
+    transform: translateY(-50%);
+  }
+  
+  .container {
+    width: 10px;
+    height: 100%;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 1);
+    border-radius: 30px;
+  }
+  
+  .item {
+    width: inherit;
+    height: inherit;
+    background: black;
+    transform-origin: 25% ;
+    
+  }
+  

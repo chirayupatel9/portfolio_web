@@ -1,0 +1,90 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap");
+h1 {
+  font-family: "Open Sans", sans-serif;
+}
+.body {
+  font-family: "Open Sans", sans-serif;
+  text-decoration-color: aliceblue;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  /* height: 100vh; */
+  font-family: "PT Sans";
+  font-size: 18px;
+}
+.imgfitt {
+  width: 650px;
+  height: 500px;
+  object-fit: cover;
+}
+.imginside{
+  border-radius: 10px;
+}
+.textblck{
+  /* background-image: linear-gradient(white, #ffeec167); */
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+}
+.imgfull {
+  margin: auto;
+  display: block;
+  width: auto;
+  max-width: 600px;
+  border-radius: 10px;
+
+}
+.cardbg{
+  background-image: linear-gradient(rgba(171, 247, 250, 0.712), #ede4e4bb);
+  margin: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+}
+@media only screen and (max-width: 720px) {
+  .imgfitt {
+    margin: auto;
+    display: block;
+    width: 95%;
+    max-width: 500px;
+    height: 99%;
+    /* max-height: 600px; */
+    padding-top: 12vh;
+  }
+  .imgfull {
+    margin: auto;
+    display: block;
+    width: auto;
+    max-width: 300px;
+  border-radius: 10px;
+
+  }
+}
+
+button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+.closebtn {
+  position: absolute;
+  right: 2vh;
+  top: 6vh;
+}
+
+.gallery {
+  display: grid;
+  grid-column-gap: 1px;
+  grid-row-gap: 10px;
+  overflow: hidden;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-auto-rows: minmax(auto, 310px);
+  grid-auto-flow: dense;
+}

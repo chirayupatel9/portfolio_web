@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap");
+h1 {
+  font-family: "Open Sans", sans-serif;
+}
+.pade {
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  padding: 10px;
+  width: 100%;
+  /* height: 550px; */
+  font-size: 18px;
+  /* height: 100%; */
+}
+.imgfit {
+  width: 600px;
+  height: 690px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.imgfull {
+  margin: auto;
+  display: block;
+  width: 90%;
+  max-width: 700px;
+  border-radius: 5px;
+}
+
+@media only screen and (max-width: 720px) {
+  .imgfull {
+    margin: auto;
+    display: block;
+    width: 90%;
+    max-width: 500px;
+    padding-top: 5vh;
+    border-radius: 5px;
+  }
+  .imgfit {
+    width: 550px;
+    height: 450px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+}
+
+
+button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+.closebtn {
+  position: absolute;
+  right: 2vh;
+  top: 6vh;
+}

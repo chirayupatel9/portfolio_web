@@ -1,0 +1,756 @@
+
+// File: src\setupTests.js
+// jest-dom adds custom jest matchers for asserting on DOM nodes.
+// allows you to do things like:
+// expect(element).toHaveTextContent(/react/i)
+// learn more: https://github.com/testing-library/jest-dom
+import '@testing-library/jest-dom';
+
+
+// File: src\reportWebVitals.js
+const reportWebVitals = onPerfEntry => {
+  if (onPerfEntry && onPerfEntry instanceof Function) {
+    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      getCLS(onPerfEntry);
+      getFID(onPerfEntry);
+      getFCP(onPerfEntry);
+      getLCP(onPerfEntry);
+      getTTFB(onPerfEntry);
+    });
+  }
+};
+
+export default reportWebVitals;
+
+
+// File: src\index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
+
+
+// File: src\App.test.js
+import { render, screen } from '@testing-library/react';
+import App from './App';
+
+test('renders learn react link', () => {
+  render(<App />);
+  const linkElement = screen.getByText(/learn react/i);
+  expect(linkElement).toBeInTheDocument();
+});
+
+
+// File: src\App.js
+import * as React from "react";
+import "./App.css";
+import IconButton from "@mui/material/IconButton";
+import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
+import { BsMoonStars } from "react-icons/bs";
+import { BsSun } from "react-icons/bs";
+import HeaderFile from "./components/HeaderFile";
+import Section1 from "./components/Section1";
+import Section3 from "./components/Section3";
+import Section2 from "./components/Section2";
+import { Paper } from "@mui/material";
+import Divider from '@mui/material/Divider';
+import Footer from "./components/Footer";
+
+const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+
+function App() {
+  const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
+  return (
+    <div>
+    <Paper
+      x={{
+        bgcolor: "background.default",
+        color: "text.primary",
+      }}
+    >
+      <div className="App">
+        <HeaderFile />
+        <div className="right">
+          <IconButton onClick={colorMode.toggleColorMode} color="inherit">
+            {theme.palette.mode === "dark" ? <BsSun /> : <BsMoonStars />}
+          </IconButton>
+        </div>
+        <br />
+        <Section1 />
+        <Section3 />
+        <Section2 />
+        <Footer/>
+      </div>
+    </Paper>
+    </div>
+  );
+}
+
+export default function ToggleColorMode() {
+  const [mode, setMode] = React.useState("light");
+
+  // Memoize the color mode toggle function
+  const colorMode = React.useMemo(() => ({
+    toggleColorMode: () => {
+      setMode(prevMode => (prevMode === "light" ? "dark" : "light"));
+    },
+  }), []);
+
+  // Memoize the theme object
+  const theme = React.useMemo(() => createTheme({
+    palette: {
+      mode,
+    },
+  }), [mode]);
+
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </ColorModeContext.Provider>
+  );
+}
+
+
+
+// File: src\components\Tester.js
+
+
+// File: src\components\Section3.js
+import React from "react";
+import { CarouselM } from "./CarouselObject/Carousel";
+import Images from "./images";
+import "./Section3.css";
+import Hover from "react-3d-hover";
+import ReactCircleModal from "react-circle-modal";
+import { AiOutlineClose } from "react-icons/ai";
+import { Divider, Paper, Typography } from "@mui/material";
+
+function Section3() {
+  return (
+    <div className="pade">
+      <>
+        <div>
+          <Divider>
+            <Typography variant="h3">
+              CAPTURING LIGHT THROUGH 24361344 pixels{" "}
+            </Typography>
+          </Divider>
+        </div>
+
+        <div style={{ padding: 50 }}>
+          <CarouselM
+            slides={
+              Images &&
+              Images.map((item) => (
+                <div>
+                  <Hover perspective={1000} max={20}>
+                    <ReactCircleModal
+                      backgroundColor="rgba(0,0,0,0.2)"
+                      toogleComponent={(onClick) => (
+                        <button onClick={onClick}>
+                          <img src={item.image} className="imgfit" />
+                        </button>
+                      )}
+                      // Optional fields and their default values
+                      offsetX={0}
+                      offsetY={0}
+                    >
+                      {(onClick) => (
+                        <div style={{ padding: "1em" }}>
+                          <img src={item.image} className="imgfull" />
+
+                          <button onClick={onClick} className="closebtn">
+                            <AiOutlineClose />
+                          </button>
+                        </div>
+                      )}
+                    </ReactCircleModal>
+                  </Hover>
+                </div>
+              ))
+            }
+            arrows={true}
+            arrowBorders={false}
+          />
+        </div>
+      </>
+    </div>
+  );
+}
+
+export default Section3;
+
+
+// File: src\components\Section2.js
+import React, { useMemo } from "react";
+import "./Section2.css";
+import Hover from "react-3d-hover";
+import { Divider, Typography } from "@mui/material";
+
+function Section2() {
+  // Memoizing the JSX inside hover components to avoid unnecessary re-renders
+  const memoizedImage = useMemo(
+    () => (
+      <Hover perspective={250} max={20}>
+        <img
+          src="/images/me2.jpg"
+          className="avatar"
+          alt="haha this is fatty"
+          loading="lazy" // Lazy load image
+        />
+      </Hover>
+    ),
+    [] // Dependencies are empty as this won't change
+  );
+
+  const memoizedDescription = useMemo(
+    () => (
+      <Hover perspective={500} max={20}>
+        <h3>
+          I'm a hobbyist photographer and programmer. My first focus is coding,
+          and if I can't find the bugs, I have been using my camera to look for
+          them. I used Code::Blocks to complete my bachelor's degree in computer
+          engineering. I'm currently working on my master's degree with Visual
+          Studio Code. Despite the fact that PyCharm was charming, a gentle
+          storm entitled WebStorm also played a significant role.
+        </h3>
+      </Hover>
+    ),
+    []
+  );
+
+  return (
+    <div className="section2-container">
+      <Divider>
+        <Typography variant="h3">About Me</Typography>
+      </Divider>
+
+      <div className="section2-content">
+        <div className="flex-container">
+          <div className="flex-left">{memoizedImage}</div>
+          <div className="flex-right">{memoizedDescription}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Section2;
+
+
+// File: src\components\Section1.js
+import React, { useMemo } from "react";
+import { CarouselM } from "./CarouselObject/Carousel";
+import Projects from "./projects";
+import "./Section1.css";
+import Hover from "react-3d-hover";
+import Carousel from "react-bootstrap/Carousel";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Divider, Typography } from "@mui/material";
+
+function Section1() {
+  // Memoize the Projects array to avoid unnecessary re-renders
+  const memoizedProjects = useMemo(() => Projects, []);
+
+  return (
+    <div>
+      <Divider variant="middle" >
+      <Typography variant="h3">Projects</Typography>
+      </Divider>
+      <div style={{ paddingTop: 20 }}>
+        <CarouselM
+          slides={memoizedProjects.map((item) => (
+            <Hover key={item.id}>
+              <div className="cardbg">
+                <Carousel variant="dark">
+                  {item.video.map((x, index) => (
+                    <Carousel.Item key={index}>
+                      <div className="imgfitt">
+                        <img
+                          src={x.source}
+                          alt={item.title}
+                          className="imgfull"
+                          loading="lazy" // Lazy loading for better performance
+                        />
+                      </div>
+                    </Carousel.Item>
+                  ))}
+                </Carousel>
+
+                <div className="textblck">
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              </div>
+            </Hover>
+          ))}
+          arrows={true}
+          arrowBorders={false}
+        />
+      </div>
+    </div>
+  );
+}
+
+export default Section1;
+
+
+// File: src\components\projects.js
+// Utility function to generate video/image paths dynamically
+const generateVideoPaths = (basePath, count, extension = "jpg") => {
+  return Array.from({ length: count }, (_, i) => ({
+    source: `${basePath}${i + 1}.${extension}`,
+  }));
+};
+
+// Optimized Projects Data Structure
+const Projects = [
+  {
+    id: 1,
+    title: "Medical BlockChain",
+    description: "A project based on Blockchain technology.",
+    video: generateVideoPaths("projects/MedicalBlockchain/mb", 8),
+  },
+  {
+    id: 2,
+    title: "Recommendation System",
+    description:
+      "A project based on Machine Learning and collaborative methods.",
+    video: generateVideoPaths("projects/RecommendationSystem/rs", 5),
+  },
+  {
+    id: 3,
+    title: "Mask Detection",
+    description: "A project based on Machine Learning and face recognition.",
+    video: generateVideoPaths("projects/MaskDetection/md", 6, "jpg"),
+  },
+  {
+    id: 4,
+    title: "To-Do app",
+    description: "A project based on JAVA.",
+    video: generateVideoPaths("projects/ToDo/todo", 5),
+  },
+  {
+    id: 5,
+    title: "Calendar app",
+    description: "A project based on python and Tkinter.",
+    video: generateVideoPaths("projects/Calendar/cal", 2),
+  },
+  {
+    id: 6,
+    title: "Tic Tac Toe",
+    description: "A project based on REACT.",
+    video: generateVideoPaths("projects/TicTacToe/tt", 3),
+  },
+  {
+    id: 7,
+    title: "Chat app",
+    description: "A project based on Android.",
+    video: generateVideoPaths("projects/chatapp/ca", 7, "JPG"),
+  },
+];
+
+export default Projects;
+
+
+// File: src\components\images.js
+// Utility function to generate image paths dynamically
+const generateImagePaths = (basePath, count, extension = 'jpg') => {
+    return Array.from({ length: count }, (_, i) => ({
+      id: i + 1,
+      image: `${basePath}${i + 1}).${extension}`,
+    }));
+  };
+  
+  // Dynamically generate images array
+  const Images = generateImagePaths('images/1 (', 30);
+  console.log(generateImagePaths('images/1 (', 30));
+  
+  
+  export default Images;
+  
+
+// File: src\components\HeaderFile.js
+import React from "react";
+import { ParallaxBanner, ParallaxProvider } from "react-scroll-parallax";
+import "./HeaderFile.css";
+import Hover from "react-3d-hover";
+
+function HeaderFile() {
+  return (
+    <div>
+      <ParallaxProvider>
+        <div className="vertical">
+          <div className="bannerContainer">
+            <ParallaxBanner
+            
+              className="bannerBg"
+              style={{ aspectRatio: "2 / 1.4" }}
+              layers={[
+                {
+                  speed: -10,
+                  children: (
+                    <video
+                      className="video"
+                      autoPlay
+                      loop
+                      playsInline
+                      preload="auto"
+                      muted
+                      poster="video/fphoto.jpg"
+                      src="video/f.mp4"
+                    />
+                  ),
+                },
+              ]}
+            >
+              <div className="parallaxChildren">
+                <Hover perspective={100} scale={1.2} max={30}>
+                  <h1 className="h1">Hi...</h1>
+                </Hover>
+              </div>
+            </ParallaxBanner>
+          </div>
+        </div>
+      </ParallaxProvider>
+    </div>
+  );
+}
+
+export default HeaderFile;
+
+
+// File: src\components\Footer.js
+import React from "react";
+import "./Footer.css";
+import { FaGithub,FaInstagram,FaLinkedin } from "react-icons/fa";
+
+function Footer() {
+  return (
+    <div>
+      <footer className="footer-section">
+        <div className="social-menu">
+                      <ul>
+                        <li>
+                          <a
+                            href="https://github.com/chirayupatel9"
+                            target="blank">
+                            <i class="fab fa-github">
+                              <FaGithub />
+                            </i>
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            href="https://www.instagram.com/chiiirayu/"
+                            target="blank"
+                          >
+                            <i class="fab fa-instagram">
+                                <FaInstagram/>
+                            </i>
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            href="https://www.linkedin.com/in/chiiirayu/"
+                            target="blank"
+                          >
+                            <i class="fab fa-linkedin-in">
+                                <FaLinkedin/>
+                            </i>
+                          </a>
+                        </li>
+                        
+                      </ul>
+                    </div>
+      </footer>
+    </div>
+  );
+}
+
+export default Footer;
+
+
+// File: src\components\ScrollPro\ScrollPro.js
+import * as React from "react";
+import { motion, useViewportScroll, useTransform } from "framer-motion";
+import './styles.css'
+export const ScrollPro = () => {
+  const { scrollYProgress } = useViewportScroll();
+  const scale = useTransform(scrollYProgress, [0, 3], [0.3, 0.3]);
+
+  return (
+    <div className="wrapper">
+      <motion.div
+        className="container"
+        style={{
+          scale
+        }}
+      >
+        <motion.div
+          className="item"
+          style={{
+            scaleY: scrollYProgress
+          }}
+        />
+      </motion.div>
+    </div>
+  );
+};
+
+
+// File: src\components\CarouselObject\Carousel.js
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useSwipeable } from "react-swipeable";
+import PropTypes from "prop-types";
+import "./styles.scss";
+import debounce from 'lodash/debounce';
+// const isEqual = require("react-fast-compare");
+
+export function CarouselM(props) {
+  const [slideTotal, setSlideTotal] = useState(0);
+  const [slideCurrent, setSlideCurrent] = useState(-1);
+  const [slides, setSlides] = useState([]);
+  const [height, setHeight] = useState("0px");
+  const intervalRef = useRef();
+  const handlers = useSwipeable({
+    onSwipedLeft: () => slideRight(),
+    onSwipedRight: () => slideLeft(),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
+  });
+  useEffect(() => {
+    const locSlides = [];
+    //console.log(props.slides);
+    props.slides.forEach((slide) => {
+      const slideobject = {
+        class: "slider-single proactivede",
+        element: slide,
+      };
+      locSlides.push(slideobject);
+    });
+    if (props.slides.length === 2) {
+      props.slides.forEach((slide) => {
+        const slideobject = {
+          class: "slider-single proactivede",
+          element: slide,
+        };
+        locSlides.push(slideobject);
+      });
+    }
+    setSlides(locSlides);
+    setSlideTotal(locSlides.length - 1);
+    setSlideCurrent(-1);
+    //console.log(slideCurrent);
+    if (slideCurrent === -1) {
+      setTimeout(() => {
+        slideRight();
+        if (props.autoplay) {
+          intervalRef.interval = setTimeout(() => {
+            slideRight();
+          }, props.interval);
+        }
+      }, 500);
+    }
+  }, [props.slides]);
+  useEffect(() => {
+    if (slideCurrent === -1) {
+      setTimeout(() => {
+        slideRight();
+      }, 500);
+    }
+  }, [slides, slideCurrent]);
+
+  const slideRight = useCallback(() => {
+    let preactiveSlide;
+    let proactiveSlide;
+    let slideCurrentLoc = slideCurrent;
+
+    const activeClass = "slider-single active";
+    const slide = [...slides];
+    if (slideTotal > 1) {
+      if (slideCurrentLoc < slideTotal) {
+        slideCurrentLoc++;
+      } else {
+        slideCurrentLoc = 0;
+      }
+      if (slideCurrentLoc > 0) {
+        preactiveSlide = slide[slideCurrentLoc - 1];
+      } else {
+        preactiveSlide = slide[slideTotal];
+      }
+      const activeSlide = slide[slideCurrentLoc];
+      if (slideCurrentLoc < slideTotal) {
+        proactiveSlide = slide[slideCurrentLoc + 1];
+      } else {
+        proactiveSlide = slide[0];
+      }
+
+      slide.forEach((slid, index) => {
+        if (slid.class.includes("preactivede")) {
+          slid.class = "slider-single proactivede";
+        }
+        if (slid.class.includes("preactive")) {
+          slid.class = "slider-single preactivede";
+        }
+      });
+
+      preactiveSlide.class = "slider-single preactive";
+      activeSlide.class = activeClass;
+      proactiveSlide.class = "slider-single proactive";
+      setSlides(slide);
+      setSlideCurrent(slideCurrentLoc);
+
+      if (document.getElementsByClassName("slider-single active").length > 0) {
+        setTimeout(() => {
+          if (
+            document.getElementsByClassName("slider-single active").length > 0
+          ) {
+            const height = document.getElementsByClassName(
+              "slider-single active"
+            )[0].clientHeight;
+            setHeight(`${height}px`);
+          }
+        }, 500);
+      }
+      if (props.autoplay) {
+        clearTimeout(intervalRef.interval);
+        intervalRef.interval = setTimeout(() => {
+          slideRight();
+        }, props.interval);
+      }
+    } else if (slide[0] && slide[0].class !== activeClass) {
+      slide[0].class = activeClass;
+      setSlides(slide);
+      setSlideCurrent(0);
+    }
+  },[slides, slideCurrent]);
+  const slideLeft = useCallback(() => {
+    if (slideTotal > 1) {
+      let preactiveSlide;
+      let proactiveSlide;
+      let slideCurrentLoc = slideCurrent;
+      const slide = [...slides];
+      if (slideCurrentLoc > 0) {
+        slideCurrentLoc--;
+      } else {
+        slideCurrentLoc = slideTotal;
+      }
+
+      if (slideCurrentLoc < slideTotal) {
+        proactiveSlide = slide[slideCurrentLoc + 1];
+      } else {
+        proactiveSlide = slide[0];
+      }
+      let activeSlide = slide[slideCurrentLoc];
+      if (slideCurrentLoc > 0) {
+        preactiveSlide = slide[slideCurrentLoc - 1];
+      } else {
+        preactiveSlide = slide[slideTotal];
+      }
+      slide.forEach((slid, index) => {
+        if (slid.class.includes("proactivede")) {
+          slid.class = "slider-single preactivede";
+        }
+        if (slid.class.includes("proactive")) {
+          slid.class = "slider-single proactivede";
+        }
+      });
+      preactiveSlide.class = "slider-single preactive";
+      activeSlide.class = "slider-single active";
+      proactiveSlide.class = "slider-single proactive";
+      setSlides(slide);
+      setSlideCurrent(slideCurrentLoc);
+      if (document.getElementsByClassName("slider-single active").length > 0) {
+        setTimeout(() => {
+          if (
+            document.getElementsByClassName("slider-single active").length > 0
+          ) {
+            const height = document.getElementsByClassName(
+              "slider-single active"
+            )[0].clientHeight;
+            setHeight(`${height}px`);
+          }
+        }, 500);
+      }
+    }
+  }, [slides, slideCurrent]);
+  const debounce = (func, delay) => {
+    let debounceTimer;
+    return (...args) => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => func.apply(this, args), delay);
+    };
+  };
+  
+  // Wrap the slide functions
+  const debouncedSlideRight = debounce(slideRight, 300);
+  const debouncedSlideLeft = debounce(slideLeft, 300);
+  
+  const sliderClass = (direction) => {
+    let sliderClass = `slider-${direction}`;
+    if (!props.arrows) {
+      sliderClass = "slider-disabled";
+    } else if (props.arrows && !props.arrowBorders) {
+      sliderClass = `slider-${direction}-noborders`;
+    }
+    return sliderClass;
+  };
+
+  return (
+      <div className="react-3d-carousel" {...handlers}>
+        {slides && slides.length > 0 && (
+          <div className="slider-container">
+            <div className="slider-content">
+              {slides.map((slider, index) => (
+                <div className={slider.class} key={index}>
+                  <div className={sliderClass("left")} onClick={debouncedSlideLeft}>
+                    <div>
+                      <i className="fa fa-arrow-left"></i>
+                    </div>
+                  </div>
+                  <div className={sliderClass("right")} onClick={debouncedSlideRight}>
+                    <div>
+                      <i className="fa fa-arrow-right"></i>
+                    </div>
+                  </div>
+
+                  <div className="slider-single-content">{slider.element}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+  );
+}
+CarouselM.propTypes = {
+  slides: PropTypes.arrayOf(PropTypes.element),
+  autoplay: PropTypes.bool,
+  interval: PropTypes.number,
+  arrows: PropTypes.bool,
+  arrowBorders: PropTypes.bool,
+};
+CarouselM.defaultProps = {
+  autoplay: false,
+  interval: 3000,
+  arrows: true,
+  arrowBorders: true,
+};
+
